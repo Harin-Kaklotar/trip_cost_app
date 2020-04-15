@@ -16,14 +16,15 @@ class MyApp extends StatelessWidget {
   }
 }
 
-
-class HelloYou extends StatefulWidget{
+class HelloYou extends StatefulWidget {
   @override
   State<StatefulWidget> createState() => _HelloYouState();
 }
 
-class _HelloYouState extends State<HelloYou>{
+class _HelloYouState extends State<HelloYou> {
   String name = '';
+  final _currencies = ['Dollar', 'Pound', 'Euro'];
+  String _currency = 'Dollar';
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -36,20 +37,35 @@ class _HelloYouState extends State<HelloYou>{
         child: Column(
           children: <Widget>[
             TextField(
-              decoration: InputDecoration(
-                hintText: "Enter your name"
-              ),
-              onChanged: (String string){
+              decoration: InputDecoration(hintText: "Enter your name"),
+              onChanged: (String string) {
                 setState(() {
                   name = string;
                 });
               },
             ),
-          Text("Hello " + name + "!")
+            DropdownButton<String>(
+              items: _currencies.map((String value){
+                return DropdownMenuItem<String>(
+                  value: value,
+                  child: Text(value),
+                );
+              }).toList(),
+              value: _currency,
+              onChanged: (String value){
+                _onDropDownChange(value);
+              },
+            ),
+            Text("Hello " + name + "!")
           ],
         ),
       ),
     );
   }
 
+  void _onDropDownChange(String value) {
+    setState(() {
+      this._currency = value;
+    });
+  }
 }
